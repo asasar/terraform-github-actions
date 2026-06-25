@@ -118,12 +118,24 @@ jobs:
                 body: body
             })
                 
+  terraform-approval:
+    name: 'Terraform Approval'
+    if: github.ref == 'refs/heads/main' && needs.terraform-plan.outputs.tfplanExitCode == 2
+    runs-on: ubuntu-latest
+    needs: [terraform-plan]
+    # Configure required reviewers in this Environment to enforce manual approval.
+    environment: tf-approval
+
+    steps:
+    - name: Await Manual Approval
+      run: echo "Waiting for approval from GitHub Environment reviewers..."
+
   terraform-apply:
     name: 'Terraform Apply'
     if: github.ref == 'refs/heads/main' && needs.terraform-plan.outputs.tfplanExitCode == 2
     runs-on: ubuntu-latest
     environment: dev
-    needs: [terraform-plan]
+    needs: [terraform-plan, terraform-approval]
     
     steps:
     # Checkout the repository to the GitHub Actions runner
@@ -145,5 +157,5 @@ jobs:
         name: tfplan
 
     # Terraform Apply
-    #- name: Terraform Apply
-    #  run: terraform apply -auto-approve tfplan
+    - name: Terraform Apply
+      run: terraform apply -auto-approve tfplan
