@@ -53,6 +53,13 @@ jobs:
     - name: Terraform Format
       run: terraform fmt -check
 
+    - uses: cschleiden/replace-tokens@v1
+      with:
+        files: '["**/*.tf"]'
+      env:
+        CDN: https://somecdn.com/
+        CALLBACK: some_value
+
     # Generates an execution plan for Terraform
     # An exit code of 0 indicated no changes, 1 a terraform failure, 2 there are pending changes.
     - name: Terraform Plan
