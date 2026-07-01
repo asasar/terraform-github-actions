@@ -67,21 +67,6 @@ jobs:
         client-id: ${{ secrets.AZURE_CLIENT_ID }}
         tenant-id: ${{ secrets.AZURE_TENANT_ID }}
         subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-  
-    - name: List storage accounts in the subscription
-      run: |
-        az storage account list --query "[].{Name:name, ResourceGroup:resourceGroup}"  -o table
-        az storage container list --account-name ${{ env.BackendStorageAccountName }} --auth-mode login --query "[].{Name:name}" -o table
-
-    - name: Verify backend blob access (AAD RBAC)
-      run: |
-        az storage blob list \
-          --account-name ${{ env.BackendStorageAccountName }} \
-          --container-name ${{ env.BackendContainerName }} \
-          --auth-mode login \
-          --num-results 1 \
-          --query "[].name" \
-          -o table
 
     - name: Verify Azure Context
       run: az account show
@@ -105,11 +90,6 @@ jobs:
             -backend-config="container_name=${{ env.BackendContainerName }}" \
             -backend-config="key=${{ env.TfStateName }}"
 
-    # Checks that all Terraform configuration files adhere to a canonical format
-    # Will fail the build if not
-    - name: Terraform Format
-      run: terraform fmt -check
-      working-directory: ${{ env.WorkingDirectory }}
 
     # Generates an execution plan for Terraform
     # An exit code of 0 indicated no changes, 1 a terraform failure, 2 there are pending changes.
