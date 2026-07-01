@@ -4,7 +4,10 @@
 module "ResourceGroupSyhunt0000" {
   source = "./Modules/terraform/azurerm/ResourceGroup"
 
-  namingConvention = var.namingConvention
+  namingConvention = {
+    environmentCode = "k"
+    projectCode     = "rdx"
+  }
   tierCode         = "sha"
   location         = var.location
   region           = var.region
