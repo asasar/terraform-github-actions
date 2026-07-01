@@ -56,7 +56,7 @@ jobs:
         repository: 'asasar/Modules' 
         ref: main
         path: 'Modules'
-        token: ${{ secrets.GH_PAT }}
+        token: ${{ secrets.GITHUB_TOKEN }}
 
     # Install the latest version of the Terraform CLI
     - name: Setup Terraform
