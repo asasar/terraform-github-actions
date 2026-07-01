@@ -5,12 +5,12 @@ module "ResourceGroupShared0000" {
   source = "./Modules/terraform/azurerm/ResourceGroup"
 
   namingConvention = { environmentCode = var.namingConvention.environmentCode
-                        projectCode     = "sai"
-                      }
-  tierCode         = "sha"
-  location         = var.location
-  region           = var.region
-  increment        = "0001"
+    projectCode = "sai"
+  }
+  tierCode  = "sha"
+  location  = var.location
+  region    = var.region
+  increment = "0001"
 
   tags = var.tags
   specificTags = {
@@ -44,8 +44,8 @@ module "VirtualNetworkShared0000" {
 
   subnetsConfig = {
     "${var.vnetShared000.subnet00.name}" = {
-      addressPrefixes                = var.vnetShared000.subnet00.addressSpace
-      delegations                    = []
+      addressPrefixes = var.vnetShared000.subnet00.addressSpace
+      delegations     = []
     }
     "${var.vnetShared000.subnet01.name}" = {
       addressPrefixes = var.vnetShared000.subnet01.addressSpace

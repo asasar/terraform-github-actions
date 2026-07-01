@@ -71,6 +71,16 @@ jobs:
         az storage account list --query "[].{Name:name, ResourceGroup:resourceGroup}"  -o table
         az storage container list --account-name ${{ env.BackendStorageAccountName }} --auth-mode login --query "[].{Name:name}" -o table
 
+    - name: Verify backend blob access (AAD RBAC)
+      run: |
+        az storage blob list \
+          --account-name ${{ env.BackendStorageAccountName }} \
+          --container-name ${{ env.BackendContainerName }} \
+          --auth-mode login \
+          --num-results 1 \
+          --query "[].name" \
+          -o table
+
     - name: Verify Azure Context
       run: az account show
     # Install the latest version of the Terraform CLI

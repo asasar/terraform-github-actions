@@ -67,17 +67,17 @@ module "ApplicationInsightsSyhunt0000" {
 module "KeyVaultSyhunt0000" {
   source = "./Modules/terraform/azurerm/KeyVault/Vault"
 
-  namingConvention      = var.namingConvention
-  tierCode              = "sha"
-  location              = var.location
-  region                = var.region
-  increment             = "0000"
-  monitorIncrement      = "0001"
-  resourceGroupName     = module.ResourceGroupSyhunt0000.ResourceGroupName
-  purgeProtectionEnable = true
-  publicAccessEnable    = true
+  namingConvention             = var.namingConvention
+  tierCode                     = "sha"
+  location                     = var.location
+  region                       = var.region
+  increment                    = "0000"
+  monitorIncrement             = "0001"
+  resourceGroupName            = module.ResourceGroupSyhunt0000.ResourceGroupName
+  purgeProtectionEnable        = true
+  publicAccessEnable           = true
   enabledForTemplateDeployment = true
-  tags = var.tags
+  tags                         = var.tags
   specificTags = {
     Tier        = var.tierTag,
     Description = "Key Vault for ${var.tierTag}",

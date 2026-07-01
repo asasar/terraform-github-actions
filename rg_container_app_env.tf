@@ -34,7 +34,7 @@ module "ContainerAppEnvironmentShared0000" {
   logAnalyticsWorkspaceID               = var.logAnalyticsWorkspaceID
   zoneRedundancyEnabled                 = false
 
-  infrastructureSubnetID       = "/subscriptions/${data.azurerm_client_config.current.subscription_id}/resourceGroups/${module.ResourceGroupShared0000.ResourceGroupName}/providers/Microsoft.Network/virtualNetworks/${module.VirtualNetworkShared0000.VirtualNetworkName}/subnets/${var.vnetShared000.subnet01.name}"
+  infrastructureSubnetID = "/subscriptions/${data.azurerm_client_config.current.subscription_id}/resourceGroups/${module.ResourceGroupShared0000.ResourceGroupName}/providers/Microsoft.Network/virtualNetworks/${module.VirtualNetworkShared0000.VirtualNetworkName}/subnets/${var.vnetShared000.subnet01.name}"
 
   workloadProfile = {
     type = "Consumption"

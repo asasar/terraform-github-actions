@@ -1,6 +1,3 @@
-###########################
-## Provider 4 all
-###########################
 provider "azurerm" {
   features {
     machine_learning {

@@ -23,46 +23,18 @@ tags = {
 
 # Networking
 vnetShared000 = {
-  addressSpace = ["172.28.201.128/26"]
+  addressSpace = ["172.28.22.192/26"]
   # PEP
   subnet00 = {
     name         = "azrfrcsntdsaisha0010"
-    addressSpace = ["172.28.201.128/28"]
+    addressSpace = ["172.28.22.192/28"]
   }
   #container app env
   subnet01 = {
     name         = "azrfrcsntdsaisha0011"
-    addressSpace = ["172.28.201.160/27"]
+    addressSpace = ["172.28.22.224/27"]
   }
 }
-
-# vnetShared000 = {
-#   addressSpace = ["172.28.201.192/26"]
-#   # PEP
-#   subnet00 = {
-#     name         = "azrfrcsntdsaisha0010"
-#     addressSpace = ["172.28.201.192/28"]
-#   }
-#   #container app env
-#   subnet01 = {
-#     name         = "azrfrcsntdsaisha0011"
-#     addressSpace = ["172.28.201.224/27"]
-#   }
-# }
-
-# vnetShared000 = {
-#   addressSpace = ["172.28.22.192/26"]
-#   # PEP
-#   subnet00 = {
-#     name         = "azrfrcsntdsaisha0010"
-#     addressSpace = ["172.28.22.192/28"]
-#   }
-#   #container app env
-#   subnet01 = {
-#     name         = "azrfrcsntdsaisha0011"
-#     addressSpace = ["172.28.22.224/27"]
-#   }
-# }
 
 azureFirewallPrivateIP = "172.28.8.132"
 
