@@ -2,7 +2,7 @@
 # Resource Group: Shared GenAI Services
 ########################################
 module "ResourceGroupContainerAppEnvSyhunt0001" {
-  source = "../../../Modules/terraform/azurerm/ResourceGroup"
+  source = "../Modules/terraform/azurerm/ResourceGroup"
 
   namingConvention = var.namingConvention
   tierCode         = "sha"
@@ -22,7 +22,7 @@ module "ResourceGroupContainerAppEnvSyhunt0001" {
 # Container App Environment
 ########################################
 module "ContainerAppEnvironmentShared0000" {
-  source = "../../../Modules/terraform/azurerm/ContainerAppsEnvironment"
+  source = "../Modules/terraform/azurerm/ContainerAppsEnvironment"
 
   namingConvention                      = var.namingConvention
   tierCode                              = "sha"

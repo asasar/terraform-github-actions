@@ -2,7 +2,7 @@
 # Resource Group
 ########################################
 module "ResourceGroupSyhunt0000" {
-  source = "../../../Modules/terraform/azurerm/ResourceGroup"
+  source = "../Modules/terraform/azurerm/ResourceGroup"
 
   namingConvention = var.namingConvention
   tierCode         = "sha"
@@ -21,7 +21,7 @@ module "ResourceGroupSyhunt0000" {
 # Managed Identity
 ########################################
 module "ManagedIdentitySyhunt0000" {
-  source = "../../../Modules/terraform/azurerm/ManagedIdentity"
+  source = "../Modules/terraform/azurerm/ManagedIdentity"
 
   namingConvention  = var.namingConvention
   tierCode          = "sha"
@@ -41,7 +41,7 @@ module "ManagedIdentitySyhunt0000" {
 # Application Insights 
 ########################################
 module "ApplicationInsightsSyhunt0000" {
-  source = "../../../Modules/terraform/azurerm/ApplicationInsights"
+  source = "../Modules/terraform/azurerm/ApplicationInsights"
 
   namingConvention  = var.namingConvention
   tierCode          = "sha"
@@ -65,7 +65,7 @@ module "ApplicationInsightsSyhunt0000" {
 # Key Vault 
 ########################################
 module "KeyVaultSyhunt0000" {
-  source = "../../../Modules/terraform/azurerm/KeyVault/Vault"
+  source = "../Modules/terraform/azurerm/KeyVault/Vault"
 
   namingConvention      = var.namingConvention
   tierCode              = "sha"
@@ -92,7 +92,7 @@ module "KeyVaultSyhunt0000" {
 }
 
 module "PrivateEndpointKeyVaultSyhunt0000" {
-  source = "../../../Modules/terraform/azurerm/PrivateEndpoint"
+  source = "../Modules/terraform/azurerm/PrivateEndpoint"
 
   namingConvention  = var.namingConvention
   tierCode          = "sha"
@@ -118,7 +118,7 @@ module "PrivateEndpointKeyVaultSyhunt0000" {
 # Storage Account 
 ########################################
 module "StorageAccountSyhunt0000" {
-  source = "../../../Modules/terraform/azurerm/StorageAccount"
+  source = "../Modules/terraform/azurerm/StorageAccount"
 
   namingConvention                = var.namingConvention
   tierCode                        = "sha"
@@ -158,7 +158,7 @@ module "StorageAccountSyhunt0000" {
 }
 
 module "PrivateEndpointStorageAccountBlob0000" {
-  source            = "../../../Modules/terraform/azurerm/PrivateEndpoint"
+  source            = "../Modules/terraform/azurerm/PrivateEndpoint"
   namingConvention  = var.namingConvention
   tierCode          = "sha"
   location          = var.location
@@ -183,7 +183,7 @@ module "PrivateEndpointStorageAccountBlob0000" {
 # PostgreSQL Flexible Server
 ########################################
 module "PostgreSqlFlexibleSyhunt0000" {
-  source            = "../../../Modules/terraform/azurerm/PostgreSqlFlexible"
+  source            = "../Modules/terraform/azurerm/PostgreSqlFlexible"
   namingConvention  = var.namingConvention
   tierCode          = "sha"
   increment         = "0000"
@@ -211,7 +211,7 @@ module "PostgreSqlFlexibleSyhunt0000" {
 }
 
 module "PrivateEndpointPostgreSqlSyhunt0000" {
-  source = "../../../Modules/terraform/azurerm/PrivateEndpoint"
+  source = "../Modules/terraform/azurerm/PrivateEndpoint"
 
   namingConvention  = var.namingConvention
   tierCode          = "sha"
@@ -238,7 +238,7 @@ module "PrivateEndpointPostgreSqlSyhunt0000" {
 # AI Foundry (Shared GenAI Services)
 ########################################
 module "AIServicesSharedSyhunt0000" {
-  source = "../../../Modules/terraform/azapi/AIHubCognitiveServiceType"
+  source = "../Modules/terraform/azapi/AIHubCognitiveServiceType"
 
   namingConvention        = var.namingConvention
   tierCode                = "sha"
@@ -260,7 +260,7 @@ module "AIServicesSharedSyhunt0000" {
 }
 
 module "PrivateEndpointAIServicesSharedSyhunt0000" {
-  source = "../../../Modules/terraform/azurerm/PrivateEndpoint"
+  source = "../Modules/terraform/azurerm/PrivateEndpoint"
 
   namingConvention  = var.namingConvention
   tierCode          = "sha"

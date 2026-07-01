@@ -2,7 +2,7 @@
 # Resource Group: Networking
 ##############################
 module "ResourceGroupShared0000" {
-  source = "../../../Modules/terraform/azurerm/ResourceGroup"
+  source = "../Modules/terraform/azurerm/ResourceGroup"
 
   namingConvention = { environmentCode = var.namingConvention.environmentCode
                         projectCode     = "sai"
@@ -23,7 +23,7 @@ module "ResourceGroupShared0000" {
 # Virtual Network
 ##############################
 module "VirtualNetworkShared0000" {
-  source = "../../../Modules/terraform/azurerm/VirtualNetwork"
+  source = "../Modules/terraform/azurerm/VirtualNetwork"
 
   namingConvention  = var.namingConvention
   tierCode          = "sha"
