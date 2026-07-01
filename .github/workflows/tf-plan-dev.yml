@@ -43,6 +43,8 @@ jobs:
     env:
       #this is needed since we are running terraform with read-only permissions
       ARM_SKIP_PROVIDER_REGISTRATION: true
+      TF_VAR_postgresqlAdminLogin: ${{ secrets.TF_VAR_POSTGRESQLADMINLOGIN }}
+      TF_VAR_postgresqlAdminPassword: ${{ secrets.TF_VAR_POSTGRESQLADMINPASSWORD }}
     outputs:
       tfplanExitCode: ${{ steps.tf-plan.outputs.exitcode }}
 
