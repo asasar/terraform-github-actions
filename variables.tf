@@ -75,13 +75,11 @@ variable "modelsShared" {
 variable "postgresqlAdminLogin" {
   type        = string
   description = "PostgreSQL admin login username"
-  default     = "PostgreSqlLogin"
   sensitive   = true
 }
 
 variable "postgresqlAdminPassword" {
   type        = string
   description = "PostgreSQL admin login password"
-  default     = "PostgreSqlPassword"
   sensitive   = true
 }

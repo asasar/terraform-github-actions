@@ -81,6 +81,3 @@ modelsShared = {
     capacity       = "10"
   }
 }
-
-postgresqlAdminLogin    = "PostgreSqlLogin"
-postgresqlAdminPassword = "PostgreSqlPassword"
