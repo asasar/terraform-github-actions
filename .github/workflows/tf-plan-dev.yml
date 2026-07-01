@@ -52,11 +52,11 @@ jobs:
     - name: Checkout Modules Repo
       uses: actions/checkout@v4
       with:
-        # Assumes the Modules repo is hosted on GitHub. Replace URL/PAT accordingly.
+        # Private Modules repo - requires PAT with repo scope
         repository: 'asasar/Modules' 
         ref: main
         path: 'Modules'
-        token: ${{ secrets.GITHUB_TOKEN }}
+        token: ${{ secrets.MODULES_REPO_TOKEN }}
 
     # Install the latest version of the Terraform CLI
     - name: Setup Terraform
@@ -89,7 +89,7 @@ jobs:
       working-directory: ${{ env.WorkingDirectory }}
       run: |
         export exitcode=0
-        terraform plan -detailed-exitcode -no-color -out tfplan -auto-approve --var-file=prd.tfvars || export exitcode=$?
+        terraform plan -detailed-exitcode -no-color -out tfplan -auto-approve --var-file=dev.tfvars || export exitcode=$?
 
         echo "exitcode=$exitcode" >> $GITHUB_OUTPUT
         
