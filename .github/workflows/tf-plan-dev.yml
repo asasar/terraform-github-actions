@@ -49,6 +49,15 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4
 
+    - name: Checkout Modules Repo
+      uses: actions/checkout@v4
+      with:
+        # Assumes the Modules repo is hosted on GitHub. Replace URL/PAT accordingly.
+        repository: 'asasar/Modules' 
+        ref: main
+        path: 'Modules'
+        token: ${{ secrets.GH_PAT }}
+
     # Install the latest version of the Terraform CLI
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v3
