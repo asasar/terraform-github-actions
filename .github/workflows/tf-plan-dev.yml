@@ -57,7 +57,10 @@ jobs:
         ref: main
         path: 'Modules'
         token: ${{ secrets.MODULES_REPO_TOKEN }}
-
+    - name: show folders
+      run: |
+        ls -R
+        tree
     # Install the latest version of the Terraform CLI
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v3
