@@ -68,7 +68,7 @@ jobs:
     - name: List storage accounts in the subscription
       run: |
         az storage account list --query "[].{Name:name, ResourceGroup:resourceGroup}" -o table
-        az storage account show --name ${{ env.BackendStorageAccountName }} --resource-group ${{ env.BackendRGName }}
+        az storage container list --account-name ${{ env.BackendStorageAccountName }} --query "[].{Name:name}" -o table
 
     - name: Verify Azure Context
       run: az account show
