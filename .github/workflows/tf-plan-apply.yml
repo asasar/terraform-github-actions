@@ -1,4 +1,4 @@
-name: 'Terraform Plan for Development Environment'
+name: 'Terraform Apply for Development Environment'
 
 on:
   push:
