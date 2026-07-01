@@ -61,27 +61,13 @@ jobs:
         ref: main
         path: 'Modules'
         token: ${{ secrets.MODULES_REPO_TOKEN }}
+
     - name: Azure Login
       uses: azure/login@v2
       with:
         client-id: ${{ secrets.AZURE_CLIENT_ID }}
         tenant-id: ${{ secrets.AZURE_TENANT_ID }}
         subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-  
-    - name: List storage accounts in the subscription
-      run: |
-        az storage account list --query "[].{Name:name, ResourceGroup:resourceGroup}"  -o table
-        az storage container list --account-name ${{ env.BackendStorageAccountName }} --auth-mode login --query "[].{Name:name}" -o table
-
-    - name: Verify backend blob access (AAD RBAC)
-      run: |
-        az storage blob list \
-          --account-name ${{ env.BackendStorageAccountName }} \
-          --container-name ${{ env.BackendContainerName }} \
-          --auth-mode login \
-          --num-results 1 \
-          --query "[].name" \
-          -o table
 
     - name: Verify Azure Context
       run: az account show
@@ -202,13 +188,42 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4
 
+    - name: Checkout Modules Repo
+      uses: actions/checkout@v4
+      with:
+        # Private Modules repo - requires PAT with repo scope
+        repository: 'asasar/Modules' 
+        ref: main
+        path: 'Modules'
+        token: ${{ secrets.MODULES_REPO_TOKEN }}
+
+    - name: Azure Login
+      uses: azure/login@v2
+      with:
+        client-id: ${{ secrets.AZURE_CLIENT_ID }}
+        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
     # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v3
+      with:
+        terraform_version: ${{ env.TerraformVersion }}
+        terraform_wrapper: false
 
     # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
     - name: Terraform Init
-      run: terraform init
+      working-directory: ${{ env.WorkingDirectory }}
+      run: |
+        terraform init \
+            -backend-config="use_oidc=true" \
+            -backend-config="use_azuread_auth=true" \
+            -backend-config="subscription_id=${{ env.BackendSubscriptionId }}" \
+            -backend-config="resource_group_name=${{ env.BackendRGName }}" \
+            -backend-config="storage_account_name=${{ env.BackendStorageAccountName }}" \
+            -backend-config="container_name=${{ env.BackendContainerName }}" \
+            -backend-config="key=${{ env.TfStateName }}"
+
 
     # Download saved plan from artifacts  
     - name: Download Terraform Plan
