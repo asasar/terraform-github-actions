@@ -19,6 +19,8 @@ permissions:
 env:
   WorkingDirectory: "./"
   TerraformVersion: "1.14.6" # Update to specific version if needed
+  ARM_USE_OIDC: true
+  ARM_USE_AZUREAD: true
   ARM_CLIENT_ID: "${{ secrets.AZURE_CLIENT_ID }}"
   ARM_SUBSCRIPTION_ID: "${{ secrets.AZURE_SUBSCRIPTION_ID }}"
   ARM_TENANT_ID: "${{ secrets.AZURE_TENANT_ID }}"
@@ -60,7 +62,12 @@ jobs:
     - name: Azure Login
       uses: azure/login@v2
       with:
-        creds: ${{ secrets.AZURE_CREDENTIALS }}
+        client-id: ${{ secrets.AZURE_CLIENT_ID }}
+        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+    - name: Verify Azure Context
+      run: az account show
     # Install the latest version of the Terraform CLI
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v3
@@ -73,6 +80,8 @@ jobs:
       working-directory: ${{ env.WorkingDirectory }}
       run: |
         terraform init \
+            -backend-config="use_oidc=true" \
+            -backend-config="use_azuread_auth=true" \
             -backend-config="subscription_id=${{ env.BackendSubscriptionId }}" \
             -backend-config="resource_group_name=${{ env.BackendRGName }}" \
             -backend-config="storage_account_name=${{ env.BackendStorageAccountName }}" \
@@ -92,7 +101,7 @@ jobs:
       working-directory: ${{ env.WorkingDirectory }}
       run: |
         export exitcode=0
-        terraform plan -detailed-exitcode -no-color -out tfplan -auto-approve --var-file=dev.tfvars || export exitcode=$?
+        terraform plan -detailed-exitcode -no-color -out tfplan --var-file=dev.tfvars || export exitcode=$?
 
         echo "exitcode=$exitcode" >> $GITHUB_OUTPUT
         
