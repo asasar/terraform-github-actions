@@ -103,3 +103,25 @@ variable "postgresqlAdminPassword" {
   description = "PostgreSQL admin login password"
   sensitive   = true
 }
+
+
+variable "postgresqlSku" {
+  type        = string
+  description = "PostgreSQL server name"
+  default     = "GP_Standard_D2ds_v5"
+}
+
+variable "PostgreSqlConfig" {
+  type = object({
+    storageTiers         = string
+    storageSize          = number
+    sku                  = string
+    highAvailabilityMode = string
+  })
+  description = "PostgreSQL server configuration"
+
+  validation {
+    condition     = contains(["Disabled", "SameZone", "ZoneRedundant"], var.PostgreSqlConfig.highAvailabilityMode)
+    error_message = "PostgreSqlConfig.highAvailabilityMode must be one of: Disabled, SameZone, ZoneRedundant."
+  }
+}

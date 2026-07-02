@@ -133,3 +133,10 @@ applicationSpecificNsgRules = {
     }
   ]
 }
+
+PostgreSqlConfig = {
+  sku                  = "B_Standard_B2ms"
+  storageTiers         = "P4"
+  storageSize          = 32768
+  highAvailabilityMode = "Disabled"
+}

@@ -222,7 +222,8 @@ module "PostgreSqlFlexibleSyhunt0000" {
   location          = var.location
   resourceGroupName = module.ResourceGroupSyhunt0000.ResourceGroupName
   postgreVersion    = "16"
-  sku               = "GP_Standard_D2ds_v5"
+  sku               = var.PostgreSqlConfig.sku
+  highAvailabilityMode = var.PostgreSqlConfig.highAvailabilityMode
   postgreAuthentication = {
     entraIDAuth     = true
     passwordAuth    = true
@@ -230,8 +231,9 @@ module "PostgreSqlFlexibleSyhunt0000" {
     postgrePassword = var.postgresqlAdminPassword
   }
   storageConfig = {
-    storageTiers = "P10"
-    storageSize  = 131072
+    storageTiers = var.PostgreSqlConfig.storageTiers
+    storageSize  = var.PostgreSqlConfig.storageSize
+    
   }
   logAnalyticsWorkspaceID = var.logAnalyticsWorkspaceID
   specificTags = {
@@ -312,27 +314,27 @@ module "PrivateEndpointAIServicesSharedSyhunt0000" {
 }
 
 
-resource "azurerm_key_vault_secret" "KeyVaultSecretSyhunt0000_postgresdb_username" {
-  name         = "postgresdb-username"
-  value        = var.postgresqlAdminLogin
-  key_vault_id = module.KeyVaultSyhunt0000.KeyVaultID
+# resource "azurerm_key_vault_secret" "KeyVaultSecretSyhunt0000_postgresdb_username" {
+#   name         = "postgresdb-username"
+#   value        = var.postgresqlAdminLogin
+#   key_vault_id = module.KeyVaultSyhunt0000.KeyVaultID
 
-  depends_on = [azurerm_role_assignment.terraform_caller_keyvault_secrets_officer, module.PrivateEndpointKeyVaultSyhunt0000, module.PostgreSqlFlexibleSyhunt0000]
-}
+#   depends_on = [azurerm_role_assignment.terraform_caller_keyvault_secrets_officer, module.PrivateEndpointKeyVaultSyhunt0000, module.PostgreSqlFlexibleSyhunt0000]
+# }
 
-resource "azurerm_key_vault_secret" "KeyVaultSecretSyhunt0000_postgresdb_password" {
-  name         = "postgresdb-password"
-  value        = var.postgresqlAdminPassword
-  key_vault_id = module.KeyVaultSyhunt0000.KeyVaultID
+# resource "azurerm_key_vault_secret" "KeyVaultSecretSyhunt0000_postgresdb_password" {
+#   name         = "postgresdb-password"
+#   value        = var.postgresqlAdminPassword
+#   key_vault_id = module.KeyVaultSyhunt0000.KeyVaultID
 
-  depends_on = [azurerm_role_assignment.terraform_caller_keyvault_secrets_officer, module.PrivateEndpointKeyVaultSyhunt0000, module.PrivateEndpointPostgreSqlSyhunt0000]
-}
+#   depends_on = [azurerm_role_assignment.terraform_caller_keyvault_secrets_officer, module.PrivateEndpointKeyVaultSyhunt0000, module.PrivateEndpointPostgreSqlSyhunt0000]
+# }
 
-resource "azurerm_key_vault_secret" "KeyVaultSecretSyhunt0000_postgresdb_connection_string" {
-  name  = "postgresdb-connection-string"
-  value = "Host=PostgreSqlServer;Port=5432;Database=postgres;Username=${var.postgresqlAdminLogin};Password=${var.postgresqlAdminPassword};Ssl Mode=Require;"
+# resource "azurerm_key_vault_secret" "KeyVaultSecretSyhunt0000_postgresdb_connection_string" {
+#   name  = "postgresdb-connection-string"
+#   value = "Host=PostgreSqlServer;Port=5432;Database=postgres;Username=${var.postgresqlAdminLogin};Password=${var.postgresqlAdminPassword};Ssl Mode=Require;"
 
-  key_vault_id = module.KeyVaultSyhunt0000.KeyVaultID
+#   key_vault_id = module.KeyVaultSyhunt0000.KeyVaultID
 
-  depends_on = [azurerm_role_assignment.terraform_caller_keyvault_secrets_officer, module.PrivateEndpointKeyVaultSyhunt0000, module.PrivateEndpointPostgreSqlSyhunt0000]
-}
+#   depends_on = [azurerm_role_assignment.terraform_caller_keyvault_secrets_officer, module.PrivateEndpointKeyVaultSyhunt0000, module.PrivateEndpointPostgreSqlSyhunt0000]
+# }
