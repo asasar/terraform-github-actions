@@ -21,7 +21,7 @@ variable "regionOpenAI" {
 variable "tierTag" {
   type        = string
   description = "Deployment tier tag"
-  default     = "Shared Resources"
+  default     = "Syhunt"
 }
 
 variable "namingConvention" {
@@ -52,6 +52,26 @@ variable "vnetShared000" {
 variable "azureFirewallPrivateIP" {
   type        = string
   description = "Azure Firewall private IP"
+}
+
+variable "applicationSpecificNsgRules" {
+  type = map(list(object({
+    name                     = string
+    priority                 = number
+    direction                = string
+    access                   = string
+    protocol                 = string
+    sourcePortRange          = string
+    destinationPortRange     = string
+    sourceAddressPrefix      = string
+    destinationAddressPrefix = string
+    description              = string
+  })))
+  description = "Application-specific NSG rules keyed by subnet key (pep, cae, pep_dev, cae_dev). Must be provided by the application team before deployment."
+  default = {
+    pep = []
+    cae = []
+  }
 }
 
 variable "logAnalyticsWorkspaceID" {

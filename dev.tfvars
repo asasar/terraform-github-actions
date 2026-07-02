@@ -12,6 +12,7 @@ namingConvention = {
 tags = {
   Environment                  = "Development",
   Project                      = "Syhunt",
+  Application                  = "Syhunt",
   Region                       = "Europe",
   AsCode                       = "Terraform",
   SecurityConfidentialityLevel = "Private",
@@ -26,43 +27,15 @@ vnetShared000 = {
   addressSpace = ["172.28.201.128/26"]
   # PEP
   subnet00 = {
-    name         = "azrfrcsntdsaisha0010"
+    name         = "azrfrcsntdsyhsha0000"
     addressSpace = ["172.28.201.128/28"]
   }
   #container app env
   subnet01 = {
-    name         = "azrfrcsntdsaisha0011"
+    name         = "azrfrcsntdsyhsha0001"
     addressSpace = ["172.28.201.160/27"]
   }
 }
-
-# vnetShared000 = {
-#   addressSpace = ["172.28.201.192/26"]
-#   # PEP
-#   subnet00 = {
-#     name         = "azrfrcsntdsaisha0010"
-#     addressSpace = ["172.28.201.192/28"]
-#   }
-#   #container app env
-#   subnet01 = {
-#     name         = "azrfrcsntdsaisha0011"
-#     addressSpace = ["172.28.201.224/27"]
-#   }
-# }
-
-# vnetShared000 = {
-#   addressSpace = ["172.28.22.192/26"]
-#   # PEP
-#   subnet00 = {
-#     name         = "azrfrcsntdsaisha0010"
-#     addressSpace = ["172.28.22.192/28"]
-#   }
-#   #container app env
-#   subnet01 = {
-#     name         = "azrfrcsntdsaisha0011"
-#     addressSpace = ["172.28.22.224/27"]
-#   }
-# }
 
 azureFirewallPrivateIP = "172.28.8.132"
 
@@ -80,4 +53,83 @@ modelsShared = {
     type           = "Standard"
     capacity       = "10"
   }
+}
+
+applicationSpecificNsgRules = {
+  pep = [
+    {
+      name                     = "allow-cae-to-pep-postgres-5432"
+      priority                 = 200
+      direction                = "Inbound"
+      access                   = "Allow"
+      protocol                 = "Tcp"
+      sourcePortRange          = "*"
+      destinationPortRange     = "5432"
+      sourceAddressPrefix      = "172.28.201.160/27"
+      destinationAddressPrefix = "172.28.201.128/28"
+      description              = "Allow PostgreSQL traffic from CAE subnet to private endpoint subnet"
+    }
+  ]
+  cae = [
+    {
+      name                     = "allow-internet-to-web-8080"
+      priority                 = 200
+      direction                = "Inbound"
+      access                   = "Allow"
+      protocol                 = "Tcp"
+      sourcePortRange          = "*"
+      destinationPortRange     = "8080"
+      sourceAddressPrefix      = "Internet"
+      destinationAddressPrefix = "172.28.201.160/27"
+      description              = "Allow external web ingress on port 8080"
+    },
+    {
+      name                     = "allow-azure-lb-to-app-5050"
+      priority                 = 210
+      direction                = "Inbound"
+      access                   = "Allow"
+      protocol                 = "Tcp"
+      sourcePortRange          = "*"
+      destinationPortRange     = "5050"
+      sourceAddressPrefix      = "AzureLoadBalancer"
+      destinationAddressPrefix = "172.28.201.160/27"
+      description              = "Allow platform load balancer traffic to internal app port 5050"
+    },
+    {
+      name                     = "allow-cae-to-pep-postgres-5432"
+      priority                 = 220
+      direction                = "Outbound"
+      access                   = "Allow"
+      protocol                 = "Tcp"
+      sourcePortRange          = "*"
+      destinationPortRange     = "5432"
+      sourceAddressPrefix      = "172.28.201.160/27"
+      destinationAddressPrefix = "172.28.201.128/28"
+      description              = "Allow outbound PostgreSQL traffic from CAE subnet"
+    },
+    {
+      name                     = "allow-cae-to-azure-monitor-443"
+      priority                 = 230
+      direction                = "Outbound"
+      access                   = "Allow"
+      protocol                 = "Tcp"
+      sourcePortRange          = "*"
+      destinationPortRange     = "443"
+      sourceAddressPrefix      = "172.28.201.160/27"
+      destinationAddressPrefix = "AzureMonitor"
+      description              = "Allow telemetry export to Application Insights via Azure Monitor"
+    },
+    {
+      name                     = "allow-cae-to-foundry-443"
+      priority                 = 240
+      direction                = "Outbound"
+      access                   = "Allow"
+      protocol                 = "Tcp"
+      sourcePortRange          = "*"
+      destinationPortRange     = "443"
+      sourceAddressPrefix      = "172.28.201.160/27"
+      destinationAddressPrefix = "AzureCloud"
+      description              = "Allow HTTPS access from CAE subnet to Azure Foundry model endpoints"
+    }
+  ]
 }
